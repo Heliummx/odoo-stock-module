@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import logging
 
@@ -81,7 +82,7 @@ class WebhookOdooOrderUpload(http.Controller):
             shipping_address_odoo = self.generate_user("", shipping_address)
             shipping_address_odoo.customer = False 
 
-        ## Creating request
+        ## Creating Sale Order
         cart_content = data.get("cart")
         order_line = self.get_order_lines(cart_content)
 

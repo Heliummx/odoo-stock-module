@@ -20,7 +20,7 @@ class StockMoveLineInheritShopifyOdooInventorySalesSynchronisation(models.Model)
             headers = {'Content-Type': 'application/json'}
             data_json = json.dumps({'params': data})
             try:
-                stock_url_post = self.env.user.company_id.shopify_post_url + '/odoo/stock-update'
+                stock_url_post = self.env.user.company_id.webhook_post_url + '/odoo/stock-update'
                 requests.post(url=stock_url_post,
                               data=data_json, headers=headers)
             except Exception as e:
