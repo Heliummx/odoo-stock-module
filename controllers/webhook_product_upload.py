@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import json
+from odoo.http import request
 import logging
 
-from odoo import http, tools, exceptions, _ 
+from odoo import http, tools, exceptions, _
 
-_logger = loggin.getLogger(__name__)
-from odoo.http import request
-import json
+_logger = logging.getLogger(__name__)
+
 
 class ShopifyOdooProductUploadResponse(http.Controller):
 
@@ -17,11 +18,13 @@ class ShopifyOdooProductUploadResponse(http.Controller):
         try:
             if not request.httprequest.get_data():
                 _logger.info("No data found, Abort")
-            converted_data = json.loads(request.httprequest.get_data().decode('utf-8'))
+            converted_data = json.loads(
+                request.httprequest.get_data().decode('utf-8'))
             error = converted_data.get('error')
             if error:
                 if error.get('status'):
-                    _logger.info("Response with an error: %s" % error.get('errorMessage'))
+                    _logger.info("Response with an error: %s" %
+                                 error.get('errorMessage'))
                     return
             data = converted_data.get('payload')
             if not data:
@@ -30,8 +33,10 @@ class ShopifyOdooProductUploadResponse(http.Controller):
 
             product_template_id = self.get_product_template(data)
             if product_template_id:
-                _logger.info("Found product template by the name %s" % product_template_id.name)
-                product_template_id.woocommerce_product_id = data.get('woocommerce_product_id')
+                _logger.info("Found product template by the name %s" %
+                             product_template_id.name)
+                product_template_id.woocommerce_product_id = data.get(
+                    'woocommerce_product_id')
                 response_variants = data.get('variants')
                 for response_variant in response_variants:
                     if response_variant.get('sku'):
@@ -39,7 +44,8 @@ class ShopifyOdooProductUploadResponse(http.Controller):
                         for variant in product_template_id.product_variant_ids:
                             _logger.info("Im searching in variants")
                             if variant.default_code == response_variant['sku']:
-                                variant.woocommerce_variant_id = response_variant.get('variant_id')
+                                variant.woocommerce_variant_id = response_variant.get(
+                                    'variant_id')
                                 break
 
         except Exception as e:

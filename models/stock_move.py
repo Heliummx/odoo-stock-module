@@ -1,4 +1,3 @@
-from odoo.tools.pycompat import izip
 from odoo.tools.float_utils import float_is_zero
 from odoo import models, fields, api, _
 import requests
@@ -40,7 +39,9 @@ class StockMoveLineInheritShopifyOdooInventorySalesSynchronisation(models.Model)
         """A function like create of the original in order to track the changing of done moves qty"""
         mls = super(
             StockMoveLineInheritShopifyOdooInventorySalesSynchronisation, self).create(vals_list)
-        for ml, vals in izip(mls, vals_list):
+        # for vals in vals_list:
+        #     print("Hola")
+        for ml in mls:
             if ml:
                 if ml.state == 'done':
                     if ml.product_id.type == 'product':

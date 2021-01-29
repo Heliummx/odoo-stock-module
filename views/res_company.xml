@@ -9,7 +9,7 @@
             <field name="inherit_id" ref="base.view_company_form"/>
             <field name="arch" type="xml">
 
-                <xpath expr="//field[@name='nomenclature_id']" position="after">
+                <xpath expr="//field[@name='website']" position="after">
                     <!-- Add your fields or attributes here -->
                     <field name="webhook_post_url"/>
                 </xpath>
